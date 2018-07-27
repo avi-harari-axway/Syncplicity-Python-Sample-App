@@ -11,6 +11,7 @@ from GroupAPIsClass import Groups
 import datetime
 import time
 import sys
+import os
 
 
 Credentials = Authentication()
@@ -38,13 +39,15 @@ Folder = Content.CreateFolderSP(Syncpoint=Syncpoint[0]['Id'], NewFolder='TestFol
 print(json.dumps(Folder, sort_keys=True, indent=4) + '\n')
 
 # get folder from syncpoint
-print('Getting new folder...\n' + json.dumps(Content.GetFolderFromSyncpoint(Syncpoint[0]['Id'], Folder[0]['FolderId']), sort_keys=True, indent=4) + '\n')
+print('Getting new folder...\n' + json.dumps(Content.GetFolderFromSyncpoint(Syncpoint[0]['Id'],
+                                             Folder[0]['FolderId']), sort_keys=True, indent=4) + '\n')
 
 # upload file
 print('Uploading file...\n')
 Filename = 'TestFile'
 Path = '%5C' + '%s' % Folder[0]['Name'] + '%5C' + "%s" % Filename
-UploadFile = Upload(Credentials, filename='%s' % Filename).Upload(Syncpoint[0]['Id'], Path)
+Full_Path = os.getcwd().encode().decode()
+UploadFile = Upload(Credentials, filename='%s' % Filename, full_path=Full_Path).Upload(Syncpoint[0]['Id'], Path)
 print(UploadFile.content.decode("utf8"))
 
 # get file
@@ -74,6 +77,11 @@ print(json.dumps(Link, sort_keys=True, indent=4) + '\n')
 print('Getting link...\n')
 GetLink = Initiate_Link.GetLink(Link[0]['Token'])
 print(json.dumps(GetLink, sort_keys=True, indent=4) + '\n')
+
+# put link
+print('Putting link...\n')
+PutLink = Initiate_Link.PutLink(Syncpoint[0]['Id'], Link[0]['Token'], Email='aharari@axway.com')
+print(json.dumps(PutLink, sort_keys=True, indent=4) + '\n')
 
 # delete link
 print('Deleting link...\n')
@@ -114,7 +122,8 @@ Provisioning = ClassUserAPIs(Credentials)
 
 # create user
 print('Creating user...\n')
-User = Provisioning.CreateUser(User='fakeuser-%s@fakedomain.com' % datetime.datetime.now().microsecond, First_Name='fake', Last_Name='user', Password='Aa!2345678')
+User = Provisioning.CreateUser(User='fakeuser-%s@fakedomain.com' % datetime.datetime.now().microsecond,
+                               First_Name='fake', Last_Name='user', Password='Aa!2345678')
 print(json.dumps(User, sort_keys=True, indent=4) + '\n')
 
 # create group

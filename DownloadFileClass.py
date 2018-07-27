@@ -15,6 +15,7 @@ class Download:
     def Download(self):
         Method = "GET"
         url = "retrieveFile.php?vToken=%s" % self.vtoken
-        request = CallAPI(url, self.AppKey, self.AccessToken, Method, AdditionalHeaders='', data='', base_url='https://data.syncplicity.com/').MakeRequest()
+        request = CallAPI(url, self.AppKey, self.AccessToken, Method, AdditionalHeaders='', data='',
+                          base_url='https://data.syncplicity.com/').MakeRequest()
         open('downloaded_file', 'wb').write(request.content)
         return request

@@ -3,7 +3,8 @@ import requests
 
 class CallAPI:
 
-    def __init__(self, url, AppKey, AccessToken, Method, AdditionalHeaders, data='', file='', base_url="https://api.syncplicity.com/"):
+    def __init__(self, url, AppKey, AccessToken, Method, AdditionalHeaders, data='', file='',
+                 base_url="https://api.syncplicity.com/"):
         self.url = base_url + url
         self.AppKey = AppKey
         self.AccessToken = AccessToken
